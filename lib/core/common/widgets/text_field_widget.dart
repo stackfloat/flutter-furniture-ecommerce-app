@@ -9,20 +9,23 @@ class TextFieldWidget extends StatelessWidget {
     this.onRevealPassword,
     this.revealPassword = false,
     this.onSubmitted,
+    this.onChanged,
   });
 
   final TextInputType keyboardType;
   final bool isPassword;
-  final String ?errorMessage;
+  final String? errorMessage;
   final VoidCallback? onRevealPassword;
-  final VoidCallback? onSubmitted;
+  final ValueChanged<String>? onSubmitted;
   final bool revealPassword;
-
+  final ValueChanged<String>? onChanged;
+  
   @override
   Widget build(BuildContext context) {
     return TextField(
       obscureText: isPassword ? true : false,
       keyboardType: keyboardType,
+      onChanged: onChanged,
       decoration: InputDecoration(
         errorText: errorMessage,
         suffixIcon: isPassword

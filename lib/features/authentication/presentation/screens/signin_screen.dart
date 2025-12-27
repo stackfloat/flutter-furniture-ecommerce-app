@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:furniture_ecommerce_app/core/common/widgets/elevated_button_widget.dart';
 import 'package:furniture_ecommerce_app/core/common/widgets/text_field_widget.dart';
-import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/signup/signup_bloc.dart';
-import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/signup/signup_event.dart';
-import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/signup/signup_state.dart';
+import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/signin/signin_bloc.dart';
 
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +15,9 @@ class SignupScreen extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return BlocConsumer<SignupBloc, SignupState>(
+            return BlocConsumer<SigninBloc, SigninState>(
               listener: (context, state) {
-                
+                // TODO: implement listener
               },
               builder: (context, state) {
                 return SingleChildScrollView(
@@ -36,34 +34,24 @@ class SignupScreen extends StatelessWidget {
 
                           // Title
                           Text(
-                            "Create an Account",
+                            "Let's Sign You In.",
                             style: textTheme.headlineLarge,
                           ),
                           const SizedBox(height: 8),
 
                           // Subtitle
                           Text(
-                            "Enter your details to register",
+                            "To Continue, first Verify that it's You.",
                             style: textTheme.bodyLarge,
                           ),
                           const SizedBox(height: 32),
 
-                          // Name field
-                          Text("Name", style: textTheme.labelLarge),
-                          const SizedBox(height: 8),
-                          TextFieldWidget(
-                            keyboardType: TextInputType.name,
-                            onChanged: (value) => context.read<SignupBloc>().add(NameChanged(value)),
-                            errorMessage: state.formSubmitted ? state.errors['name'] : null,
-                            ),
-                          const SizedBox(height: 20),
-
                           // Email field
-                          Text("Email Address", style: textTheme.labelLarge),
+                          Text("Email", style: textTheme.labelLarge),
                           const SizedBox(height: 8),
                           TextFieldWidget(
                             keyboardType: TextInputType.emailAddress,
-                            onChanged: (value) => context.read<SignupBloc>().add(EmailChanged(value)),
+                            onChanged: (value) => context.read<SigninBloc>().add(EmailChanged(value)),
                             errorMessage: state.formSubmitted ? state.errors['email'] : null,
                           ),
                           const SizedBox(height: 20),
@@ -74,19 +62,8 @@ class SignupScreen extends StatelessWidget {
                           TextFieldWidget(
                             keyboardType: TextInputType.visiblePassword,
                             isPassword: true,
-                            onChanged: (value) => context.read<SignupBloc>().add(PasswordChanged(value)),
+                            onChanged: (value) => context.read<SigninBloc>().add(PasswordChanged(value)),
                             errorMessage: state.formSubmitted ? state.errors['password'] : null,
-                          ),
-                          const SizedBox(height: 32),
-
-                          // Password field
-                          Text("Confirm Password", style: textTheme.labelLarge),
-                          const SizedBox(height: 8),
-                          TextFieldWidget(
-                            keyboardType: TextInputType.visiblePassword,
-                            isPassword: true,
-                            onChanged: (value) => context.read<SignupBloc>().add(ConfirmPasswordChanged(value)),
-                            errorMessage: state.formSubmitted ? state.errors['confirmPassword'] : null,
                           ),
                           const SizedBox(height: 32),
 
@@ -94,9 +71,9 @@ class SignupScreen extends StatelessWidget {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButtonWidget(
-                              buttonLabel: 'Sign Up',
+                              buttonLabel: 'Sign In',
                               onPressEvent: () {
-                                context.read<SignupBloc>().add(SignupSubmitted());
+                                context.read<SigninBloc>().add(SigninSubmitted());
                               },
                             ),
                           ),
@@ -110,10 +87,10 @@ class SignupScreen extends StatelessWidget {
                                 style: textTheme.bodyMedium,
                                 children: [
                                   const TextSpan(
-                                    text: "Already have an account? ",
+                                    text: "Don't have an account? ",
                                   ),
                                   TextSpan(
-                                    text: "Sign In",
+                                    text: "Sign Up",
                                     style: textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),

@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:furniture_ecommerce_app/core/services/logging/app_logger.dart';
+import 'package:furniture_ecommerce_app/core/services/network/dio_client.dart';
 import 'package:furniture_ecommerce_app/core/services/storage/secure_storage_service.dart';
 import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/signin/signin_bloc.dart';
 import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/signup/signup_bloc.dart';
@@ -66,6 +67,11 @@ Future<void> initDependencies() async {
   // Initialize SecureStorageService
   await sl<SecureStorageService>().init();
 
+  // Network Client
+  sl.registerLazySingleton<DioClient>(
+    () => DioClient(sl<SecureStorageService>()),
+  );
+
   // ---------------------------------------------------------------------------
   // Features - Authentication
   // ---------------------------------------------------------------------------
@@ -108,7 +114,7 @@ Future<void> initDependencies() async {
   // ⏳ Data Sources (TODO: Implement and uncomment)
   // sl.registerLazySingleton<AuthRemoteDataSource>(
   //   () => AuthRemoteDataSourceImpl(
-  //     client: sl<http.Client>(),
+  //     client: sl<DioClient>(),
   //   ),
   // );
   

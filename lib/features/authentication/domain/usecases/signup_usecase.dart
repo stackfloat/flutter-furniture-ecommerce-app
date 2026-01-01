@@ -1,15 +1,15 @@
 import 'package:furniture_ecommerce_app/core/domain/usecases/usecase.dart';
 import 'package:furniture_ecommerce_app/core/utils/typedef.dart';
+import 'package:furniture_ecommerce_app/features/authentication/domain/repositories/auth_repository.dart';
 
 class SignupUseCase implements UseCase<void, SignupParams> {
-  // final AuthRepository repository;
-  
-  // SignupUseCase(this.repository);
+  final AuthRepository repository;
+
+  SignupUseCase(this.repository);
   
   @override
   ResultFuture<void> call(SignupParams params) async {
-    // TODO: Implement signup logic
-    throw UnimplementedError();
+    return repository.signup(params.name, params.email, params.password);
   }
 }
 

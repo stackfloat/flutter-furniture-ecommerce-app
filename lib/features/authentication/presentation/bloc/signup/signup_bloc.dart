@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:furniture_ecommerce_app/features/authentication/domain/usecases/signup_usecase.dart';
 import 'signup_event.dart';
 import 'signup_state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
-  SignupBloc() : super(const SignupState()) {
+  final SignupUseCase signupUseCase;
+
+  SignupBloc(this.signupUseCase) : super(const SignupState()) {
     on<NameChanged>(_onNameChanged);
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
@@ -17,47 +20,49 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     emit(state.copyWith(revealPassword: event.revealPassword));
   }
 
-  void _onRevealConfirmPassword(RevealConfirmPassword event, Emitter<SignupState> emit) {
+  void _onRevealConfirmPassword(
+    RevealConfirmPassword event,
+    Emitter<SignupState> emit,
+  ) {
     emit(state.copyWith(revealConfirmPassword: event.revealConfirmPassword));
   }
 
   void _onNameChanged(NameChanged event, Emitter<SignupState> emit) {
-    emit(state.copyWith(
-      name: event.name,
-      errors: {
-        ...state.errors,
-        ..._validateName(event.name),
-      },
-    ));
+    emit(
+      state.copyWith(
+        name: event.name,
+        errors: {...state.errors, ..._validateName(event.name)},
+      ),
+    );
   }
 
   void _onEmailChanged(EmailChanged event, Emitter<SignupState> emit) {
-    emit(state.copyWith(
-      email: event.email,
-      errors: {
-        ...state.errors,
-        ..._validateEmail(event.email),
-      },
-    ));
+    emit(
+      state.copyWith(
+        email: event.email,
+        errors: {...state.errors, ..._validateEmail(event.email)},
+      ),
+    );
   }
 
   void _onPasswordChanged(PasswordChanged event, Emitter<SignupState> emit) {
-    emit(state.copyWith(
-      password: event.password,
-      errors: {
-        ...state.errors,
-        ..._validatePassword(event.password),
-      },
-    ));
+    emit(
+      state.copyWith(
+        password: event.password,
+        errors: {...state.errors, ..._validatePassword(event.password)},
+      ),
+    );
 
     // Re-validate confirm password if it's not empty
     if (state.confirmPassword.isNotEmpty) {
-      emit(state.copyWith(
-        errors: {
-          ...state.errors,
-          ..._validateConfirmPassword(state.confirmPassword),
-        },
-      ));
+      emit(
+        state.copyWith(
+          errors: {
+            ...state.errors,
+            ..._validateConfirmPassword(state.confirmPassword),
+          },
+        ),
+      );
     }
   }
 
@@ -65,35 +70,55 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     ConfirmPasswordChanged event,
     Emitter<SignupState> emit,
   ) {
-    emit(state.copyWith(
-      confirmPassword: event.confirmPassword,
-      errors: {
-        ...state.errors,
-        ..._validateConfirmPassword(event.confirmPassword),
-      },
-    ));
+    emit(
+      state.copyWith(
+        confirmPassword: event.confirmPassword,
+        errors: {
+          ...state.errors,
+          ..._validateConfirmPassword(event.confirmPassword),
+        },
+      ),
+    );
   }
 
-  void _onSignupSubmitted(SignupSubmitted event, Emitter<SignupState> emit) {
+  void _onSignupSubmitted(
+    SignupSubmitted event,
+    Emitter<SignupState> emit,
+  ) async {
     // Perform all validations on submit
-    emit(state.copyWith(
-      formSubmitted: true,
-      errors: {
-        ...state.errors,
-        ..._validateName(state.name),
-        ..._validateEmail(state.email),
-        ..._validatePassword(state.password),
-        ..._validateConfirmPassword(state.confirmPassword),
-      },
-    ));
+    emit(
+      state.copyWith(
+        formSubmitted: true,
+        errors: {
+          ...state.errors,
+          ..._validateName(state.name),
+          ..._validateEmail(state.email),
+          ..._validatePassword(state.password),
+          ..._validateConfirmPassword(state.confirmPassword),
+        },
+      ),
+    );
 
     // Check if form is valid (all errors are null)
     final isValid = state.errors.values.every((error) => error == null);
 
     if (isValid) {
-      emit(state.copyWith(status: SignupStatus.success));
-    } else {
-      emit(state.copyWith(status: SignupStatus.failure));
+      final result = await signupUseCase(
+        SignupParams(
+          name: state.name,
+          email: state.email,
+          password: state.password,
+        ),
+      );
+
+      result.fold(
+        (failure) {
+          emit(state.copyWith(status: SignupStatus.failure));
+        },
+        (success) {
+          emit(state.copyWith(status: SignupStatus.success));
+        },
+      );
     }
   }
 

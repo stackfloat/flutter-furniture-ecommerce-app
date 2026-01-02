@@ -20,9 +20,18 @@ class SignupScreen extends StatelessWidget {
           builder: (context, constraints) {
             return BlocConsumer<SignupBloc, SignupState>(
               listener: (context, state) {
-              if (state.status == SignupStatus.success) {
-                context.go('/');
-              }
+                if (state.status == SignupStatus.success) {
+                  // Navigate to home screen on successful signup
+                  context.go('/');
+                } else if (state.status == SignupStatus.failure) {
+                  // Show error message if needed
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Signup failed. Please try again.'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               builder: (context, state) {
                 return SingleChildScrollView(

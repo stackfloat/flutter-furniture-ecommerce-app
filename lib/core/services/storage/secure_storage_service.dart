@@ -38,6 +38,10 @@ abstract class SecureStorageService {
   Future<String?> getUser();
   Future<void> deleteUser();
 
+  Future<void> saveUserId(int userId);
+  Future<int?> getUserId();
+  Future<void> deleteUserId();
+
   // FCM Token Management
   Future<void> saveFcmToken(String token);
   Future<String?> getFcmToken();
@@ -55,6 +59,7 @@ abstract class SecureStorageService {
     required String accessToken,
     required String refreshToken,
     required String userJson,
+    required int userId,
   });
 }
 
@@ -65,6 +70,7 @@ class SecureStorageServiceImpl implements SecureStorageService {
   static const _kAccessToken = 'access_token';
   static const _kRefreshToken = 'refresh_token';
   static const _kUser = 'user';
+  static const _kUserId = 'user_id';
   static const _kFcmToken = 'fcm_token';
   static const _kFirstRun = 'is_first_run';
 
@@ -197,6 +203,23 @@ class SecureStorageServiceImpl implements SecureStorageService {
     await delete(_kUser);
   }
 
+  @override
+  Future<void> saveUserId(int userId) async {
+    await write(_kUserId, userId.toString());
+  }
+
+  @override
+  Future<int?> getUserId() async {
+    final userIdStr = await read(_kUserId);
+    if (userIdStr == null) return null;
+    return int.tryParse(userIdStr);
+  }
+
+  @override
+  Future<void> deleteUserId() async {
+    await delete(_kUserId);
+  }
+
   // ---------------------------------------------------------------------------
   // FCM Token
   // ---------------------------------------------------------------------------
@@ -232,6 +255,7 @@ class SecureStorageServiceImpl implements SecureStorageService {
       deleteAccessToken(),
       deleteRefreshToken(),
       deleteUser(),
+      deleteUserId(),
     ]);
   }
 
@@ -240,11 +264,13 @@ class SecureStorageServiceImpl implements SecureStorageService {
     required String accessToken,
     required String refreshToken,
     required String userJson,
+    required int userId,
   }) async {
     await Future.wait([
       saveAccessToken(accessToken),
       saveRefreshToken(refreshToken),
       saveUser(userJson),
+      saveUserId(userId),
     ]);
   }
 

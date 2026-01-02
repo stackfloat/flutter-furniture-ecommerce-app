@@ -42,7 +42,7 @@ class DioClient {
     );
 
     dio.interceptors.add(AuthInterceptor(_secureStorage));
-    dio.interceptors.add(DioInterceptor());
+    dio.interceptors.add(DioInterceptor(_secureStorage));
 
     if (kDebugMode) {
       dio.interceptors.add(PrettyDioLogger(

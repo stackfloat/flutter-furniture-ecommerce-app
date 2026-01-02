@@ -4,6 +4,7 @@ class UserModel extends User {
   final String token;
 
   const UserModel({
+    required super.id,
     required super.name,
     required super.email,
     required this.token,
@@ -17,6 +18,7 @@ class UserModel extends User {
       final user = data['user'] as Map<String, dynamic>;
 
       return UserModel(
+        id: user['id'] as int,
         name: user['name'] as String,
         email: user['email'] as String,
         token: data['token'] as String,
@@ -56,6 +58,12 @@ class UserModel extends User {
     }
 
     // Validate user fields
+    if (!user.containsKey('id') || user['id'] is! int) {
+      throw FormatException(
+        'Invalid response: missing or invalid "id" field',
+      );
+    }
+
     if (!user.containsKey('name') || user['name'] is! String) {
       throw FormatException(
         'Invalid response: missing or invalid "name" field',
@@ -71,15 +79,15 @@ class UserModel extends User {
 
   /// Converts [UserModel] to JSON for API requests.
   Map<String, dynamic> toJson() {
-    return {'name': name, 'email': email, 'token': token};
+    return {'id': id, 'name': name, 'email': email, 'token': token};
   }
 
   /// Converts [UserModel] to domain [User] entity.
   /// The token is excluded as it's stored separately in secure storage.
   User toEntity() {
-    return User(name: name, email: email);
+    return User(id: id, name: name, email: email);
   }
 
   @override
-  List<Object?> get props => [name, email, token];
+  List<Object?> get props => [id, name, email, token];
 }

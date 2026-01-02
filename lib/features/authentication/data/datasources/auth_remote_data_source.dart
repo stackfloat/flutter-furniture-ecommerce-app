@@ -63,7 +63,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> login(String email, String password) async {
     try {
       final response = await _dioClient.dio.post(
-        '/auth/login',
+        '/login',
         data: {'email': email, 'password': password},
       );
 

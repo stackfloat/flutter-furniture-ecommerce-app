@@ -18,7 +18,18 @@ class LoginScreen extends StatelessWidget {
           builder: (context, constraints) {
             return BlocConsumer<SigninBloc, SigninState>(
               listener: (context, state) {
-                // TODO: implement listener
+                if (state.status == SigninStatus.success) {
+                  // Navigate to home screen on successful login
+                  context.go('/');
+                } else if (state.status == SigninStatus.failure) {
+                  // Show error message if needed
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Login failed. Please check your credentials.'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               builder: (context, state) {
                 return SingleChildScrollView(

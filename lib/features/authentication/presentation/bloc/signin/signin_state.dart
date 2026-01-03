@@ -10,6 +10,7 @@ class SigninState {
   final SigninStatus status;
   final bool formSubmitted;
   final bool revealPassword;
+  final User? user;
 
   const SigninState({
     this.email = '',
@@ -18,6 +19,7 @@ class SigninState {
     this.status = SigninStatus.initial,
     this.formSubmitted = false,
     this.revealPassword = false,
+    this.user,
   });
 
   // Helper getters for easy access to specific errors
@@ -36,6 +38,7 @@ class SigninState {
     SigninStatus? status,
     bool? formSubmitted,
     bool? revealPassword,
+    User? user,
   }) {
     return SigninState(
       email: email ?? this.email,
@@ -44,6 +47,7 @@ class SigninState {
       status: status ?? this.status,
       formSubmitted: formSubmitted ?? this.formSubmitted,
       revealPassword: revealPassword ?? this.revealPassword,
+      user: user ?? this.user,
     );
   }
 }

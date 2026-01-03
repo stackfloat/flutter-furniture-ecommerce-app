@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:furniture_ecommerce_app/core/common/widgets/elevated_button_widget.dart';
 import 'package:furniture_ecommerce_app/core/common/widgets/text_field_widget.dart';
+import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/auth/auth_bloc.dart';
+import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/auth/auth_event.dart';
 import 'package:furniture_ecommerce_app/features/authentication/presentation/bloc/signin/signin_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,8 +21,9 @@ class LoginScreen extends StatelessWidget {
             return BlocConsumer<SigninBloc, SigninState>(
               listener: (context, state) {
                 if (state.status == SigninStatus.success) {
-                  // Navigate to home screen on successful login
-                  context.go('/');
+                  context.read<AuthBloc>().add(
+                      LoggedIn(state.user!),
+                  );
                 } else if (state.status == SigninStatus.failure) {
                   // Show error message if needed
                   ScaffoldMessenger.of(context).showSnackBar(

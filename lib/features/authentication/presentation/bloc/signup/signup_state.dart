@@ -1,3 +1,5 @@
+import 'package:furniture_ecommerce_app/features/authentication/domain/entities/user.dart';
+
 enum SignupStatus { initial, loading, success, failure }
 
 class SignupState {
@@ -8,10 +10,10 @@ class SignupState {
   final bool formSubmitted;
   final bool revealPassword;
   final bool revealConfirmPassword;
-
   final Map<String, String?> errors;
 
   final SignupStatus status;
+  final User? user;
 
   const SignupState({
     this.name = '',
@@ -23,6 +25,7 @@ class SignupState {
     this.status = SignupStatus.initial,
     this.revealPassword = false,
     this.revealConfirmPassword = false,
+    this.user,
   });
 
   bool get isValid =>
@@ -48,6 +51,7 @@ class SignupState {
     SignupStatus? status,
     bool? revealPassword,
     bool? revealConfirmPassword,
+    User? user,
   }) {
     return SignupState(
       name: name ?? this.name,
@@ -59,6 +63,7 @@ class SignupState {
       status: status ?? this.status,
       revealPassword: revealPassword ?? this.revealPassword,
       revealConfirmPassword: revealConfirmPassword ?? this.revealConfirmPassword,
+      user: user ?? this.user,
     );
   }
 }

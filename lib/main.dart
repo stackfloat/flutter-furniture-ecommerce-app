@@ -12,7 +12,6 @@ import 'package:furniture_ecommerce_app/core/services/logging/app_bloc_observer.
 import 'package:furniture_ecommerce_app/core/theme/app_theme.dart';
 import 'package:furniture_ecommerce_app/firebase_options.dart';
 
-
 void main() {
   runZonedGuarded(
     () async {
@@ -27,7 +26,7 @@ void main() {
       Bloc.observer = AppBlocObserver();
 
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-        kReleaseMode    ,
+        kReleaseMode,
       );
 
       FlutterError.onError = (details) {
@@ -59,7 +58,12 @@ void main() {
         rethrow;
       }
 
-      runApp(const MainApp());
+      runApp(
+        BlocProvider.value(
+          value: authBloc,
+          child: const MainApp(),
+        ),
+      );
     },
     (error, stack) {
       print('runZonedGuarded');

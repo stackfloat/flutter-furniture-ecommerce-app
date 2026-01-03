@@ -113,15 +113,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         ),
       );
 
-      print('result');
-      print(result);
-
       result.fold(
         (failure) {
           emit(state.copyWith(status: SignupStatus.failure));
         },
-        (user) {
-          emit(state.copyWith(status: SignupStatus.success));
+        (user) {        
+          emit(state.copyWith(status: SignupStatus.success, user: user));
         },
       );
     }

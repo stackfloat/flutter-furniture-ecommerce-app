@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:furniture_ecommerce_app/features/authentication/domain/entities/user.dart';
 import 'package:furniture_ecommerce_app/features/authentication/domain/usecases/signin_usecase.dart';
 import 'package:meta/meta.dart';
 
@@ -68,7 +69,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
           emit(state.copyWith(status: SigninStatus.failure));
         },
         (user) {
-          emit(state.copyWith(status: SigninStatus.success));
+          emit(state.copyWith(status: SigninStatus.success, user: user));
         },
       );
     } else {

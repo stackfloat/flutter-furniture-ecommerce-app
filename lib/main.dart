@@ -34,13 +34,11 @@ void main() {
       );
 
       FlutterError.onError = (details) {
-        print('FlutterError.onError');
         if (!kReleaseMode) FlutterError.dumpErrorToConsole(details);
         FirebaseCrashlytics.instance.recordFlutterFatalError(details);
       };
 
       PlatformDispatcher.instance.onError = (error, stack) {
-        if (kDebugMode) debugPrint('PlatformDispatcher.instance.onError');
         if (!kReleaseMode) {
           FlutterError.dumpErrorToConsole(
             FlutterErrorDetails(exception: error, stack: stack),

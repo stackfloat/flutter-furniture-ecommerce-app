@@ -25,15 +25,7 @@ class LoginScreen extends StatelessWidget {
                   context.read<AuthBloc>().add(
                       LoggedIn(state.user!),
                   );
-                } else if (state.status == SigninStatus.failure) {
-                  // Show error message if needed
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Login failed. Please check your credentials.'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
+                } 
               },
               builder: (context, state) {
                 return SingleChildScrollView(
@@ -96,6 +88,7 @@ class LoginScreen extends StatelessWidget {
                             width: double.infinity,
                             child: ElevatedButtonWidget(
                               buttonLabel: 'Sign In',
+                              isLoading: state.status == SigninStatus.loading,
                               onPressEvent: () {
                                 context.read<SigninBloc>().add(SigninSubmitted());
                               },

@@ -80,6 +80,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
             state.copyWith(
               authError: 'Invalid email or password',
               serverError: null,
+              status: SigninStatus.failure,
             ),
           );
         } else if (failure is AccountDisabledFailure) {
@@ -87,6 +88,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
             state.copyWith(
               authError: 'Your account has been disabled',
               serverError: null,
+              status: SigninStatus.failure,
             ),
           );
         } else {
@@ -94,6 +96,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
             state.copyWith(
               serverError: 'Something went wrong. Please try again.',
               authError: null,
+              status: SigninStatus.failure,
             ),
           );
         }

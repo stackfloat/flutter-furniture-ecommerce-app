@@ -17,7 +17,7 @@ class UserModel extends User {
       final data = json['data'] as Map<String, dynamic>;
       final user = data['user'] as Map<String, dynamic>;
 
-      return UserModel(
+    return UserModel(
         id: user['id'] as int,
         name: user['name'] as String,
         email: user['email'] as String,
@@ -67,7 +67,7 @@ class UserModel extends User {
     if (!user.containsKey('name') || user['name'] is! String) {
       throw FormatException(
         'Invalid response: missing or invalid "name" field',
-      );
+    );
     }
 
     if (!user.containsKey('email') || user['email'] is! String) {

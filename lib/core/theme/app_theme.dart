@@ -50,6 +50,8 @@ class AppTheme {
         minimumSize: const Size(0, 48),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        disabledBackgroundColor: const Color.fromARGB(255, 25, 22, 22).withValues(alpha: 0.4),
+        disabledForegroundColor: Colors.white.withValues(alpha: 0.8),          
       ),
     ),
 
@@ -63,7 +65,7 @@ class AppTheme {
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.black,
         side: const BorderSide(color: Colors.black),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            
       ),
     ),
 

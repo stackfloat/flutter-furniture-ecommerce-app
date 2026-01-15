@@ -27,14 +27,6 @@ class SignupScreen extends StatelessWidget {
                    context.read<AuthBloc>().add(
                       LoggedIn(state.user!),
                   );
-                } else if (state.status == SignupStatus.failure) {
-                  // Show error message if needed
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Signup failed. Please try again.'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
                 }
               },
               builder: (context, state) {
@@ -141,6 +133,7 @@ class SignupScreen extends StatelessWidget {
                             width: double.infinity,
                             child: ElevatedButtonWidget(
                               buttonLabel: 'Sign Up',
+                              isLoading: state.status == SignupStatus.loading,
                               onPressEvent: () {
                                 context.read<SignupBloc>().add(
                                   SignupSubmitted(),

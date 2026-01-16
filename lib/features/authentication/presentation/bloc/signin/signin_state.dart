@@ -30,11 +30,6 @@ class SigninState extends Equatable {
   String? get emailError => errors.email;
   String? get passwordError => errors.password;
 
-  bool get isValid =>
-      errors.hasErrors == false &&
-      email.isNotEmpty &&
-      password.isNotEmpty;
-
   SigninState copyWith({
     String? email,
     String? password,

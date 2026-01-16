@@ -35,13 +35,6 @@ class SignupState extends Equatable {
   @override
   List<Object?> get props => [name, email, password, confirmPassword, formSubmitted, errors, status, revealPassword, revealConfirmPassword, user, serverError];
 
-  bool get isValid =>
-      errors.hasErrors &&
-      name.isNotEmpty &&
-      email.isNotEmpty &&
-      password.isNotEmpty &&
-      confirmPassword.isNotEmpty;
-
   // Helper getters for individual errors
   String? get nameError => errors.name;
   String? get emailError => errors.email;

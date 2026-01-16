@@ -50,7 +50,13 @@ class AuthRepositoryImpl implements AuthRepository {
       }
 
       // 2️⃣ Fallback to generic API failure
-      return Left(ApiFailure(message: e.message ?? 'Server error occurred'));
+      return Left(
+        ApiFailure(
+          message: e.message ?? 'Server error occurred',
+          statusCode: e.statusCode ?? 500,
+          errors: e.errors,
+        ),
+      );
       
     } catch (e) {
       return Left(
@@ -88,7 +94,13 @@ class AuthRepositoryImpl implements AuthRepository {
       }
 
       // 2️⃣ Fallback to generic API failure
-      return Left(ApiFailure(message: e.message ?? 'Server error occurred'));
+      return Left(
+        ApiFailure(
+          message: e.message ?? 'Server error occurred',
+          statusCode: e.statusCode ?? 500,
+          errors: e.errors,
+        ),
+      );
     } catch (e) {
       return Left(
         ApiFailure(

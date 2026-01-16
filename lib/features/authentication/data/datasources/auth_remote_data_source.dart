@@ -90,7 +90,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> logout() async {
     try {
-      await _dioClient.dio.post('/auth/logout');
+      await _dioClient.dio.post('/logout');
     } on DioException catch (e) {
       if (e.response != null) {
         final data = e.response!.data;

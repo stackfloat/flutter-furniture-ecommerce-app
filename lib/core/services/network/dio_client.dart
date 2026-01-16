@@ -207,7 +207,6 @@ class DioClient {
   ApiFailure _handleDioException(DioException e) {
     if (e.response != null) {
       final data = e.response!.data;
-      final statusCode = e.response!.statusCode ?? 500;
 
       // Extract message from server response
       final message = _extractMessage(data);
@@ -217,7 +216,6 @@ class DioClient {
 
       return ApiFailure(
         message: message,
-        statusCode: statusCode,
         errors: errors,
       );
     }
@@ -225,7 +223,6 @@ class DioClient {
     // Handle network/connection errors (no response)
     return ApiFailure(
       message: _getNetworkErrorMessage(e.type),
-      statusCode: 0,
     );
   }
 
@@ -276,7 +273,6 @@ class DioClient {
   ApiFailure _handleUnexpectedException(Object e) {
     return ApiFailure(
       message: 'An unexpected error occurred: ${e.toString()}',
-      statusCode: 0,
     );
   }
 }

@@ -169,8 +169,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     if (password.isEmpty) {
       return 'Password is required';
     }
-    if (password.length < 6) {
-      return 'Password must be at least 6 characters';
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters';
     }
     return null;
   }
@@ -249,6 +249,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       return 'Something went wrong. Please try again later.';
     }
 
-    return 'Unexpected error occurred1.';
+    if (failure is ApiFailure) {
+      if (failure.statusCode == 0) {
+        return 'Network error. Please check your connection.';
+      }
+      return 'Something went wrong. Please try again later.';
+    }
+
+    return 'Unexpected error occurred.';
   }
 }

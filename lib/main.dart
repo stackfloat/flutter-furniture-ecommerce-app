@@ -24,7 +24,11 @@ void main() {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      await dotenv.load(fileName: ".env");
+      try {
+        await dotenv.load(fileName: '.env');
+      } catch (e) {
+        if (!kReleaseMode) debugPrint('dotenv load failed: $e');
+      }
 
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
@@ -63,8 +67,7 @@ void main() {
         rethrow;
       }
 
-      // Option C: hydrate auth BEFORE building the router to avoid any
-      // sign-in/home flicker caused by AuthStatus.unknown redirects.
+
       final getCurrentUserUseCase = sl<GetCurrentUserUseCase>();
       final authSessionNotifier = sl<AuthSessionNotifier>();
       final user = await getCurrentUserUseCase();

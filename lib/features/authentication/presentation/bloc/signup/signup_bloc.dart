@@ -276,20 +276,20 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   String _mapFailureToGlobalMessage(Failure failure) {
 
     if (failure is NetworkFailure) {
-      return 'Network error. Please check your connection.';
+      return failure.message ?? 'Network error. Unexpected error occurred.';
     }
 
     if (failure is ServerFailure) {
-      return 'Something went wrong. Please try again later.';
+      return failure.message ?? 'Something went wrong. Please try again later.';
     }
 
     if (failure is ApiFailure) {
       if (failure.statusCode == 0) {
-        return 'Network error. Please check your connection.';
+        return failure.message ?? 'Network error. Unexpected error occurred.';
       }
-      return 'Something went wrong. Please try again later.';
+      return failure.message ?? 'Something went wrong. Please try again later.';
     }
 
-    return 'Unexpected error occurred.';
+    return failure.message ?? 'Unexpected error occurred.';
   }
 }
